@@ -5,20 +5,22 @@ using UnityEngine;
 
 public class Activator : MonoBehaviour
 {
-    [SerializeField] private GameObject[] firstGroup;
-    [SerializeField] private GameObject[] secondGroup;
+    [SerializeField] private List<GameObject> firstGroup;
+    [SerializeField] private List<GameObject> secondGroup;
     [SerializeField] private Activator _button;
     [SerializeField] private Material normal;
     [SerializeField] private Material transparent;
+    [SerializeField] private Renderer renderer;
+    [SerializeField] private Collider collider;
     public bool canPush;
-    
-
     private Renderer _rd;
+    
     private void Start()
     {
         _rd = GetComponent<Renderer>();
     }
 
+    
     private void OnTriggerEnter(Collider other)
     {
         if (canPush)
@@ -27,7 +29,7 @@ public class Activator : MonoBehaviour
             {
                 foreach (GameObject first in firstGroup)
                 {
-                    first.GetComponent<Renderer>().material = normal;
+                    SetRenderer(normal);
                     first.GetComponent<Collider>().isTrigger = false;
                 }
 
@@ -42,5 +44,14 @@ public class Activator : MonoBehaviour
                 _button.canPush = true;
             }
         }
+    }
+    public void SetRenderer(Material material)
+    {
+        renderer.material = material;
+    }
+
+    public void SetCollider(bool isTrigger)
+    {
+        collider.isTrigger = isTrigger;
     }
 }
