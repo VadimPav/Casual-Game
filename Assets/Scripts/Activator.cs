@@ -2,24 +2,24 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityTemplateProjects;
 
 public class Activator : MonoBehaviour
 {
-    [SerializeField] private List<GameObject> firstGroup;
-    [SerializeField] private List<GameObject> secondGroup;
+    [SerializeField] private List<GroupElement> firstGroup;
+    [SerializeField] private List<GroupElement> secondGroup;
     [SerializeField] private Activator _button;
     [SerializeField] private Material normal;
     [SerializeField] private Material transparent;
-    [SerializeField] private Renderer renderer;
-    [SerializeField] private Collider collider;
-    public bool canPush;
+    
     private Renderer _rd;
+    
+    public bool canPush;
     
     private void Start()
     {
         _rd = GetComponent<Renderer>();
     }
-
     
     private void OnTriggerEnter(Collider other)
     {
@@ -27,16 +27,16 @@ public class Activator : MonoBehaviour
         {
             if (other.CompareTag("Cube") || other.CompareTag("Player"))
             {
-                foreach (GameObject first in firstGroup)
+                foreach (GroupElement first in firstGroup)
                 {
-                    SetRenderer(normal);
-                    first.GetComponent<Collider>().isTrigger = false;
+                    first.SetRenderer(normal);
+                    first.SetCollider(false);
                 }
 
-                foreach (GameObject second in secondGroup)
+                foreach (GroupElement second in secondGroup)
                 {
-                    second.GetComponent<Renderer>().material = transparent;
-                    second.GetComponent<Collider>().isTrigger = true;
+                    second.SetRenderer(transparent);
+                    second.SetCollider(true);
                 }
 
                 _rd.material = transparent;
@@ -44,14 +44,5 @@ public class Activator : MonoBehaviour
                 _button.canPush = true;
             }
         }
-    }
-    public void SetRenderer(Material material)
-    {
-        renderer.material = material;
-    }
-
-    public void SetCollider(bool isTrigger)
-    {
-        collider.isTrigger = isTrigger;
     }
 }
